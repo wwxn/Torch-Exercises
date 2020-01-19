@@ -1,0 +1,48 @@
+import random
+
+import torch.nn as nn
+import torch.optim as optim
+
+import definition as df
+
+train_data, test_data = df.create_data()
+
+data_loaded = [item for item in train_data]
+data = data_loaded[0]
+
+inputs = data[0]
+inputs = inputs.view(inputs.size(0), -1)
+target = data[1]
+model = df.SimpleNet(28 * 28, 100, 30, 10)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.5)
+
+time = 0
+flag = True
+while flag:
+    data = data_loaded[random.randint(0, data_loaded.__len__())]
+    inputs = data[0]
+    inputs = inputs.view(inputs.size(0), -1)
+    target = data[1]
+    out = model.forward(inputs)
+    loss = criterion.forward(out, target)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    rate = df.calculate_rate(out, target)
+    if time % 1000 == 0:
+        print("correct rate is {},loss is {}".format(rate, loss).title())
+    if loss <0.05:
+        flag = False
+
+model.eval()
+data_for_test = [item for item in test_data]
+data_for_test = data_for_test[0]
+input_for_test = data_for_test[0]
+input_for_test = input_for_test.view(input_for_test.size(0), -1)
+target_for_test = data_for_test[1]
+out = model.forward(input_for_test)
+answer_out = df.predict(out)
+correct_rate = df.calculate_rate(out, target_for_test)
+print(
+    'The correct answer is {},and the output is {}.Correct rate is{}'.format(target_for_test, answer_out, correct_rate))
