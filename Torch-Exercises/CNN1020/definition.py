@@ -44,9 +44,7 @@ class SimpleNet(nn.Module):
     def forward(self, x):
         y = self.conv1.forward(x)
         y = self.conv2.forward(y)
-        print(y.size())
         y = y.view(y.size(0), -1)
-        print(y.size())
         y = self.full_connect.forward(y)
         return y
 

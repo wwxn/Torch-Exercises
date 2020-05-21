@@ -5,12 +5,12 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
 import numpy as np
-x=torch.FloatTensor(np.float32([i for i in range(1,21)]))
+x=torch.FloatTensor(np.float32([i*0.01 for i in range(-200,200)]))
 input=df.make_features(x)
 target=df.f(input)
 model=df.PolyLinear()
 criterion=nn.MSELoss()
-optimizer=optim.SGD(model.parameters(),lr=9e-8)
+optimizer=optim.SGD(model.parameters(),lr=1e-3)
 plt.plot(x,target,'ro')
 
 flag=True
@@ -25,12 +25,13 @@ while flag:
     time+=1
     if time%1000==0:
         print("current loss is{}".format(loss.data).title())
+        print(list(model.parameters()))
         # print(model)
-    if loss.data<50:
-        flag=False
-        break;
+    # if loss.data<50:
+    #     flag=False
 
 model.eval()
+print(list(model.parameters()))
 out=model.forward(input)
 plt.plot(x.detach().numpy(),out.detach().numpy())
 plt.show()

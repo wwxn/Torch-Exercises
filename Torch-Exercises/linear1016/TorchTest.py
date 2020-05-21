@@ -16,9 +16,9 @@ arrayy=[]
 for time in range(1,21):
     randnum=rd.random()
     if randnum>0.5:
-        arrayy.append([float(time)+0.5-randnum*5])
+        arrayy.append([float(time)])
     else:
-        arrayy.append([float(time)+randnum*5])
+        arrayy.append([float(time)])
 
 x_train=torch.Tensor(arrayx)
 y_train=torch.Tensor(arrayy)
@@ -46,6 +46,7 @@ for epoch in range(num_epochs):
         print("Epoch[{}/{}],loss:{:6f}".format(epoch+1,num_epochs,loss.data))
 
 model.eval()
+print(list(model.parameters()))
 predict=model.forward(inputs)
 plt.plot(inputs.detach().numpy(),target.detach().numpy(),'ro')
 plt.plot(inputs.detach().numpy(),predict.detach().numpy())

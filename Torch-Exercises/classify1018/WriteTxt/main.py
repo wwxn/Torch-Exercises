@@ -2,7 +2,7 @@ import random
 
 path="data.txt"
 with open(path,'w') as f:
-    for i in range(1,21):
+    for i in range(1,2000):
         x=random.random()*10
         y=random.random()*10
         if x<5:

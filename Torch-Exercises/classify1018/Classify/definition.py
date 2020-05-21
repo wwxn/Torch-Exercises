@@ -1,5 +1,7 @@
 import torch
 import torch.nn as nn
+
+
 def read_data(path):
     with open(path) as f:
         datax = f.readlines()
@@ -13,17 +15,26 @@ def read_data(path):
         for i in range(number):
             datay.append(datax[i].pop())
         datax = torch.Tensor(datax)
-        datay = torch.Tensor(datay)
-        datay = datay.unsqueeze(1)
-        return datax,datay
+        datay = torch.LongTensor(datay)
+        # datay = datay.unsqueeze(1)
+        return datax, datay
+
 
 class Classify(nn.Module):
     def __init__(self):
         super(Classify, self).__init__()
-        self.linear=nn.Linear(2,1)
-        self.sig=nn.Sigmoid()
+        self.linear1 = nn.Linear(2, 64)
+        self.BN1=nn.BatchNorm1d(64)
+        self.relu = nn.ReLU()
+        self.linear2 = nn.Linear(64, 2)
+        self.BN2 = nn.BatchNorm1d(2)
+        self.sig = nn.Sigmoid()
 
-    def forward(self,x):
-        y=self.linear.forward(x)
-        y=self.sig.forward(y)
+    def forward(self, x):
+        y = self.linear1.forward(x)
+        y=self.BN1(y)
+        y = self.relu(y)
+        y = self.linear2(y)
+        y=self.BN2(y)
+        y = self.sig.forward(y)
         return y
