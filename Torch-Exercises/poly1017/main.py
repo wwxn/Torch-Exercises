@@ -27,8 +27,8 @@ while flag:
         print("current loss is{}".format(loss.data).title())
         print(list(model.parameters()))
         # print(model)
-    # if loss.data<50:
-    #     flag=False
+    if loss.data<1e-3:
+        flag=False
 
 model.eval()
 print(list(model.parameters()))

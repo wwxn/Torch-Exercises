@@ -8,17 +8,14 @@ import torch.optim as optim
 from torch.autograd import Variable
 arrayx=[]
 
-for time in range(1,21):
+for time in range(1,2001):
     arrayx.append([time])
 
 arrayy=[]
 
-for time in range(1,21):
+for time in range(1,2001):
     randnum=rd.random()
-    if randnum>0.5:
-        arrayy.append([float(time)])
-    else:
-        arrayy.append([float(time)])
+    arrayy.append([float(time)+randnum])
 
 x_train=torch.Tensor(arrayx)
 y_train=torch.Tensor(arrayy)
@@ -28,7 +25,7 @@ print(x_train)
 model=mc.LinearRegression()
 
 criterion=nn.MSELoss()
-optimizer=optim.SGD(model.parameters(),lr=0.0001)
+optimizer=optim.SGD(model.parameters(),lr=1e-7)
 
 num_epochs=1000
 inputs=x_train
@@ -36,7 +33,7 @@ target=y_train
 for epoch in range(num_epochs):
 
     out=model.forward(inputs)
-    print(out)
+    # print(out)
     loss=criterion.forward(out,target)
     optimizer.zero_grad()
     loss.backward()
